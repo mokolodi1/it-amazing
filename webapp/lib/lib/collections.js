@@ -52,3 +52,15 @@ Notifications.attachSchema(new SimpleSchema({
 
   date_created: { type: Date, autoValue: dateCreatedAutoValue },
 }));
+
+Clothing = new Meteor.Collection("clothing");
+Clothing.attachSchema(new SimpleSchema({
+  user_id: { type: String },
+
+  date_created: { type: Date, autoValue: dateCreatedAutoValue },
+
+  // foreign key
+  image_id: { type: String },
+
+  type: { type: String },
+}));

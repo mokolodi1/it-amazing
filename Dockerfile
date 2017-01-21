@@ -37,4 +37,10 @@ ADD . /code
 # get to work!
 WORKDIR /code/webapp/
 
+# Install the npm stuff
+USER root
+RUN meteor npm install
+USER ubuntu
+
+# Start meteor when the container starts
 CMD meteor

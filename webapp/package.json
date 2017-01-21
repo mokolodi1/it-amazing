@@ -5,6 +5,7 @@
     "start": "meteor run"
   },
   "dependencies": {
+    "@google-cloud/vision": "^0.7.1",
     "babel-runtime": "^6.22.0",
     "bcrypt": "^1.0.2",
     "meteor-node-stubs": "~0.2.0"

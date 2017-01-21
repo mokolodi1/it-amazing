@@ -62,5 +62,6 @@ Clothing.attachSchema(new SimpleSchema({
   // foreign key
   image_id: { type: String },
 
-  type: { type: String },
+  // can also be "unknown"
+  type: { type: String, defaultValue: "waiting" },
 }));

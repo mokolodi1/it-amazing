@@ -3,9 +3,11 @@
 </template>
 
 <template name="closet">
-  <h1>Closet</h1>
+  <h1>
+    Closet
 
-  {{> addClothing}}
+    {{> addClothing}}
+  </h1>
 
   <div class="ui link cards">
     <div class="card">
@@ -85,10 +87,10 @@
 </template>
 
 <template name="addClothing">
-  {{#with currentUpload}}
-    Uploading <b>{{file.name}}</b>:
-    <span id="progress">{{progress.get}}%</span>
-  {{else}}
-    <input id="fileInput" type="file" />
-  {{/with}}
+  <div for="file" class="ui icon primary right floated button choose-files
+      {{#if currentUpload}}loading{{/if}}">
+    <i class="plus icon"></i>
+    Add clothing
+  </div>
+  <input type="file" id="fileInput" style="display: none">
 </template>

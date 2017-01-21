@@ -1,7 +1,17 @@
 import vision from "@google-cloud/vision";
 
 Meteor.methods({
-  addClothing(image_id) {
-    console.log("image_id:", image_id);
+  processClothing(clothingId) {
+    let user_id = Meteor.userId();
+    let user = ensureUser(user_id);
+
+    let clothingItem = Clothing.findOne({
+      clothingId,
+
+      // security
+      user_id,
+    });
+
+    console.log(clothingItem.path);
   },
 });

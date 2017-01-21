@@ -14,6 +14,18 @@ Template.addClothing.onCreated(function () {
   let instance = this;
 
   instance.currentUpload = new ReactiveVar(false);
+
+  // instance.autorun(() => {
+  //   let upload = instance.currentUpload.get();
+  //
+  //   if (upload) {
+  //     console.log("upload:", upload);
+  //     console.log("upload.progress.get():", upload.progress.get());
+  //     $(".upload-progress").progress({
+  //       percent: upload.progress.get()
+  //     });
+  //   }
+  // });
 });
 
 Template.addClothing.helpers({
@@ -23,6 +35,9 @@ Template.addClothing.helpers({
 });
 
 Template.addClothing.events({
+  "click .choose-files"(event, instance) {
+    instance.$("#fileInput").click();
+  },
   'change #fileInput': function (e, template) {
     if (e.currentTarget.files && e.currentTarget.files[0]) {
       // We upload only one file, in case

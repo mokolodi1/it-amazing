@@ -1,0 +1,277 @@
+<template name="appBody">
+  <div class="ui fixed borderless menu">
+    <div class="ui container">
+      <a href={{pathFor "home"}} class="header item">
+        IT Amazing
+      </a>
+
+      <a href={{pathFor "home"}} class="ui simple dropdown item">
+        Tools
+        <div class="menu">
+          <a href={{pathFor "listGsea"}} class="item">
+            GSEA
+          </a>
+
+          <a href={{pathFor "listUpDownGenes"}} class="item">
+            Outlier Analysis
+          </a>
+
+          <!-- <a href={{pathFor "listPairedAnalysis"}} class="item">
+            Paired Tumor Analysis
+          </a> -->
+
+          <a href={{pathFor "listLimma"}} class="item">
+            Limma
+          </a>
+
+          <a href={{pathFor "listSingleSampleTopGenes"}} class="item">
+            Single Sample Top Genes
+          </a>
+
+          <a href={{pathFor "listLimmaGSEA"}} class="item">
+            Limma <i class="right arrow icon"></i> GSEA
+          </a>
+          <!-- <a href={{pathFor "listTumorMap"}} class="item">
+            Tumor Map
+          </a> -->
+
+        </div>
+      </a>
+
+      <a href={{pathFor "manageObjects"}} class="ui simple dropdown item">
+        Data
+        <div class="menu">
+          <a href={{pathFor "manageObjects" collectionSlug="data-sets"}}
+              class="item">
+            Data Sets
+          </a>
+          <a href={{pathFor "manageObjects" collectionSlug="sample-groups"}}
+              class="item">
+            Sample Groups
+          </a>
+          <a href={{pathFor "manageObjects" collectionSlug="gene-sets"}}
+              class="item">
+            Gene Sets
+          </a>
+          <a href={{pathFor "manageObjects" collectionSlug="gene-set-groups"}}
+              class="item">
+            Gene Set Groups
+          </a>
+          <a href={{pathFor "manageObjects" collectionSlug="studies"}}
+              class="item">
+            Studies
+          </a>
+          <a href={{pathFor "manageObjects" collectionSlug="clinical-forms"}}
+              class="item">
+            Clinical Forms
+          </a>
+        </div>
+      </a>
+
+      <a href={{pathFor "manageCollaborations"}}
+          class="item">
+        Collaborations
+      </a>
+
+      <div class="right menu">
+        {{> notificationsMenuItem}}
+
+        <div class="ui simple dropdown icon item">
+          <i class="info circle icon"></i>
+          <div class="menu">
+            <a href="mailto:mokolodi1@gmail.com" class="item">
+              Send us an email
+            </a>
+          </div>
+        </div>
+        <div class="item">
+          {{> loginButtons}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui container" style="padding-top: 55px;">
+    {{! don't show the breadcrumbs on the not signed in page or
+        on the home page}}
+    {{#unless isActiveRoute "home"}}
+      {{> siteBreadcrumbs}}
+    {{/unless}}
+
+    {{#if loggingIn}}
+      {{> loggingInMessage}}
+    {{else}}
+      {{#if currentUser}}
+        {{#if currentMedBookUser}}
+          {{>Template.dynamic template=content data=params}}
+        {{else}}
+          {{> loggingInMessage}}
+        {{/if}}
+      {{else}}
+        {{#if isActiveRoute "home"}}
+          {{> home}}
+        {{else}}
+          <div class="ui massive message">
+            <div class="header">
+              Sign in to continue
+            </div>
+            Please sign in to access your virtual closet.
+          </div>
+        {{/if}}
+      {{/if}}
+    {{/if}}
+  </div>
+</template>
+
+<template name="siteBreadcrumbs">
+  <div class="ui big breadcrumb">
+    {{#breadcrumbItem isActive=(isActiveRoute "home")
+        href=(pathFor "home")}}
+      Home
+    {{/breadcrumbItem}}
+
+    {{#if or (isActiveRoute "listLimmaGSEA")
+        (isActiveRoute "limmaGseaJob")}}
+      {{#breadcrumbItem isActive=(isActiveRoute "listLimmaGSEA")
+          href=(pathFor "listLimmaGSEA")}}
+        Limma <i class="right arrow icon"></i> GSEA
+      {{/breadcrumbItem}}
+    {{/if}}
+
+    {{#if or (isActiveRoute "listGsea")
+        (isActiveRoute "gseaJob")}}
+      {{#breadcrumbItem isActive=(isActiveRoute "listGsea")
+          href=(pathFor "listGsea")}}
+        GSEA
+      {{/breadcrumbItem}}
+    {{/if}}
+
+    <!-- {{#if or (isActiveRoute "listPairedAnalysis")
+        (isActiveRoute "pairedAnalysisJob")}}
+      {{#breadcrumbItem isActive=(isActiveRoute "listPairedAnalysis")
+          href=(pathFor "listPairedAnalysis")}}
+        Paired Tumor Analysis
+      {{/breadcrumbItem}}
+    {{/if}} -->
+
+    {{#if or (isActiveRoute "listLimma")
+        (isActiveRoute "limmaJob")}}
+      {{#breadcrumbItem isActive=(isActiveRoute "listLimma")
+          href=(pathFor "listLimma")}}
+        Limma
+      {{/breadcrumbItem}}
+    {{/if}}
+
+    {{#if or (isActiveRoute "listSingleSampleTopGenes")
+        (isActiveRoute "singleSampleTopGenesJob")}}
+      {{#breadcrumbItem isActive=(isActiveRoute "listSingleSampleTopGenes")
+          href=(pathFor "listSingleSampleTopGenes")}}
+        Single Sample Top Genes
+      {{/breadcrumbItem}}
+    {{/if}}
+
+    <!-- {{#if isActiveRoute "listTumorMap"}}
+      {{#breadcrumbItem isActive=true}}
+        Tumor Map
+      {{/breadcrumbItem}}
+    {{/if}} -->
+
+    {{#if or (isActiveRoute "listUpDownGenes")
+        (isActiveRoute "upDownGenesJob")}}
+      {{#breadcrumbItem isActive=(isActiveRoute "listUpDownGenes")
+          href=(pathFor "listUpDownGenes")}}
+        Outlier Analysis
+      {{/breadcrumbItem}}
+    {{/if}}
+
+    {{#if isJobResult}}
+      {{#breadcrumbItem isActive=true}}
+        Result
+      {{/breadcrumbItem}}
+    {{/if}}
+
+    {{#if threeOr (isActiveRoute "manageCollaborations")
+        (isActiveRoute "createCollaboration")
+        (isActiveRoute "browseCollaborations")}}
+      {{#breadcrumbItem isActive=true}}
+        Collaborations
+      {{/breadcrumbItem}}
+    {{/if}}
+
+    {{#if or (isActiveRoute "manageObjects")
+        (isActiveRoute "viewFormRecords")}}
+      {{! TODO: don't hardcode collectionSlug}}
+      {{#breadcrumbItem isActive=(isActiveRoute "manageObjects")
+          href=(pathFor "manageObjects" collectionSlug="clinical-forms")}}
+        Manage data
+      {{/breadcrumbItem}}
+
+      {{#if isActiveRoute "viewFormRecords"}}
+        {{#breadcrumbItem isActive=true}}
+          View records
+        {{/breadcrumbItem}}
+      {{/if}}
+    {{/if}}
+
+    {{! Utility}}
+
+    {{#if invalidUrl}}
+      {{#breadcrumbItem isActive=true}}Invalid URL{{/breadcrumbItem}}
+    {{/if}}
+
+    {{#if isActiveRoute "widgetsDemo"}}
+      {{#breadcrumbItem isActive=true}}
+        Widgets
+      {{/breadcrumbItem}}
+    {{/if}}
+  </div>
+</template>
+
+<template name="breadcrumbItem">
+  {{#if isActive}}
+    <div class="section active">
+      {{> UI.contentBlock}}
+    </div>
+  {{else}}
+    <a href={{href}}>
+      {{> UI.contentBlock}}
+    </a>
+    <span class="divider">/</span>
+  {{/if}}
+</template>
+
+<template name="loggingInMessage">
+  <div class="ui massive icon message">
+    <i class="notched circle loading icon"></i>
+    <div class="content">
+      <div class="header">
+        Logging in...
+      </div>
+      <p>
+        You'll be on your way in just a moment!
+      </p>
+    </div>
+  </div>
+</template>
+
+<template name="routeNotFound">
+  <div class="ui message massive">
+    <div class="header">Invalid URL</div>
+    <p>
+      To be completely honest, we don't quite know how you found your way here...
+    </p>
+    <p>
+      Click here to return to the home page:
+      {{! NOTE: we have to refresh the page (target="_self") because some of
+          the FlowRouter reactive functions stop working after hitting the
+          invalid page, so the breadcrumbs don't work anymore.}}
+      <a href={{pathFor "home"}} class="ui primary button" target="_self">
+        <i class="home icon"></i>
+        Go home!
+      </a>
+    </p>
+    <p>
+      If you think you are seeing this message in error, please {{> contactUsButton}}
+    </p>
+  </div>
+</template>

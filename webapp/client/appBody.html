@@ -5,42 +5,9 @@
         IT Amazing
       </a>
 
-      <a href={{pathFor "home"}} class="ui simple dropdown item">
-        Tools
-        <div class="menu">
-          <a href={{pathFor "listGsea"}} class="item">
-            GSEA
-          </a>
-
-          <a href={{pathFor "listUpDownGenes"}} class="item">
-            Outlier Analysis
-          </a>
-
-          <!-- <a href={{pathFor "listPairedAnalysis"}} class="item">
-            Paired Tumor Analysis
-          </a> -->
-
-          <a href={{pathFor "listLimma"}} class="item">
-            Limma
-          </a>
-
-          <a href={{pathFor "listSingleSampleTopGenes"}} class="item">
-            Single Sample Top Genes
-          </a>
-
-          <a href={{pathFor "listLimmaGSEA"}} class="item">
-            Limma <i class="right arrow icon"></i> GSEA
-          </a>
-          <!-- <a href={{pathFor "listTumorMap"}} class="item">
-            Tumor Map
-          </a> -->
-
-        </div>
-      </a>
-
-      <a href={{pathFor "manageObjects"}} class="ui simple dropdown item">
-        Data
-        <div class="menu">
+      <a href={{pathFor "closet"}} class="ui simple dropdown item">
+        Closet
+        <!-- <div class="menu">
           <a href={{pathFor "manageObjects" collectionSlug="data-sets"}}
               class="item">
             Data Sets
@@ -65,12 +32,11 @@
               class="item">
             Clinical Forms
           </a>
-        </div>
+        </div> -->
       </a>
 
-      <a href={{pathFor "manageCollaborations"}}
-          class="item">
-        Collaborations
+      <a href={{pathFor "outfits"}} class="ui simple dropdown item">
+        Outfits
       </a>
 
       <div class="right menu">
@@ -94,11 +60,7 @@
       {{> loggingInMessage}}
     {{else}}
       {{#if currentUser}}
-        {{#if currentMedBookUser}}
-          {{>Template.dynamic template=content data=params}}
-        {{else}}
-          {{> loggingInMessage}}
-        {{/if}}
+        {{>Template.dynamic template=content data=params}}
       {{else}}
         {{#if isActiveRoute "home"}}
           {{> home}}
@@ -122,99 +84,31 @@
       Home
     {{/breadcrumbItem}}
 
-    {{#if or (isActiveRoute "listLimmaGSEA")
+    {{#if isActiveRoute "closet"}}
+      {{#breadcrumbItem isActive=(isActiveRoute "closet")
+          href=(pathFor "closet")}}
+        Closet
+      {{/breadcrumbItem}}
+    {{/if}}
+
+    {{#if isActiveRoute "outfits"}}
+      {{#breadcrumbItem isActive=(isActiveRoute "outfits")
+          href=(pathFor "outfits")}}
+        Outfits
+      {{/breadcrumbItem}}
+    {{/if}}
+
+    <!-- {{#if or (isActiveRoute "listLimmaGSEA")
         (isActiveRoute "limmaGseaJob")}}
       {{#breadcrumbItem isActive=(isActiveRoute "listLimmaGSEA")
           href=(pathFor "listLimmaGSEA")}}
         Limma <i class="right arrow icon"></i> GSEA
       {{/breadcrumbItem}}
-    {{/if}}
-
-    {{#if or (isActiveRoute "listGsea")
-        (isActiveRoute "gseaJob")}}
-      {{#breadcrumbItem isActive=(isActiveRoute "listGsea")
-          href=(pathFor "listGsea")}}
-        GSEA
-      {{/breadcrumbItem}}
-    {{/if}}
-
-    <!-- {{#if or (isActiveRoute "listPairedAnalysis")
-        (isActiveRoute "pairedAnalysisJob")}}
-      {{#breadcrumbItem isActive=(isActiveRoute "listPairedAnalysis")
-          href=(pathFor "listPairedAnalysis")}}
-        Paired Tumor Analysis
-      {{/breadcrumbItem}}
     {{/if}} -->
-
-    {{#if or (isActiveRoute "listLimma")
-        (isActiveRoute "limmaJob")}}
-      {{#breadcrumbItem isActive=(isActiveRoute "listLimma")
-          href=(pathFor "listLimma")}}
-        Limma
-      {{/breadcrumbItem}}
-    {{/if}}
-
-    {{#if or (isActiveRoute "listSingleSampleTopGenes")
-        (isActiveRoute "singleSampleTopGenesJob")}}
-      {{#breadcrumbItem isActive=(isActiveRoute "listSingleSampleTopGenes")
-          href=(pathFor "listSingleSampleTopGenes")}}
-        Single Sample Top Genes
-      {{/breadcrumbItem}}
-    {{/if}}
-
-    <!-- {{#if isActiveRoute "listTumorMap"}}
-      {{#breadcrumbItem isActive=true}}
-        Tumor Map
-      {{/breadcrumbItem}}
-    {{/if}} -->
-
-    {{#if or (isActiveRoute "listUpDownGenes")
-        (isActiveRoute "upDownGenesJob")}}
-      {{#breadcrumbItem isActive=(isActiveRoute "listUpDownGenes")
-          href=(pathFor "listUpDownGenes")}}
-        Outlier Analysis
-      {{/breadcrumbItem}}
-    {{/if}}
-
-    {{#if isJobResult}}
-      {{#breadcrumbItem isActive=true}}
-        Result
-      {{/breadcrumbItem}}
-    {{/if}}
-
-    {{#if threeOr (isActiveRoute "manageCollaborations")
-        (isActiveRoute "createCollaboration")
-        (isActiveRoute "browseCollaborations")}}
-      {{#breadcrumbItem isActive=true}}
-        Collaborations
-      {{/breadcrumbItem}}
-    {{/if}}
-
-    {{#if or (isActiveRoute "manageObjects")
-        (isActiveRoute "viewFormRecords")}}
-      {{! TODO: don't hardcode collectionSlug}}
-      {{#breadcrumbItem isActive=(isActiveRoute "manageObjects")
-          href=(pathFor "manageObjects" collectionSlug="clinical-forms")}}
-        Manage data
-      {{/breadcrumbItem}}
-
-      {{#if isActiveRoute "viewFormRecords"}}
-        {{#breadcrumbItem isActive=true}}
-          View records
-        {{/breadcrumbItem}}
-      {{/if}}
-    {{/if}}
 
     {{! Utility}}
-
     {{#if invalidUrl}}
       {{#breadcrumbItem isActive=true}}Invalid URL{{/breadcrumbItem}}
-    {{/if}}
-
-    {{#if isActiveRoute "widgetsDemo"}}
-      {{#breadcrumbItem isActive=true}}
-        Widgets
-      {{/breadcrumbItem}}
     {{/if}}
   </div>
 </template>

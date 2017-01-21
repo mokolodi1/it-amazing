@@ -12,4 +12,7 @@ function sameNameAndAction(name) {
 
 FlowRouter.route("/", sameNameAndAction("home"));
 
+FlowRouter.route("/closet", sameNameAndAction("closet"));
+FlowRouter.route("/outfits", sameNameAndAction("outfits"));
+
 FlowRouter.route("/notifications", sameNameAndAction("viewAllNotifications"));

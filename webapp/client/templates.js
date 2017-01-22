@@ -1,11 +1,18 @@
 Template.closet.onCreated(function () {
   let instance = this;
 
-  // instance.subscribe
+  instance.subscribe("allClothing");
 });
 
 Template.closet.helpers({
-
+  getClothing() {
+    return Clothing.find({}, {
+      sort: { date_created: -1 }
+    });
+  },
+  sinceCreated() {
+    return moment(this.date_created).fromNow();
+  },
 });
 
 // Template.addClothing
@@ -14,18 +21,6 @@ Template.addClothing.onCreated(function () {
   let instance = this;
 
   instance.currentUpload = new ReactiveVar(false);
-
-  // instance.autorun(() => {
-  //   let upload = instance.currentUpload.get();
-  //
-  //   if (upload) {
-  //     console.log("upload:", upload);
-  //     console.log("upload.progress.get():", upload.progress.get());
-  //     $(".upload-progress").progress({
-  //       percent: upload.progress.get()
-  //     });
-  //   }
-  // });
 });
 
 Template.addClothing.helpers({

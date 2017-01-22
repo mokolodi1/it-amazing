@@ -1,5 +1,13 @@
 import vision from "@google-cloud/vision";
 
+typeClothes = {
+  "t shirt": "top",
+  "pants": "bottom",
+  "sock": "socks",
+  "shoe": "shoes",
+  "hat": "accessories"
+}
+
 Meteor.methods({
   processClothing(clothingId) {
     let user_id = Meteor.userId();
@@ -25,12 +33,24 @@ Meteor.methods({
     let image = Images.findOne(clothingItem.image_id);
 
     visionClient.detect(image.path, types,
-        Meteor.bindEnvironment(function(err, detections, apiResponse) {
-      Clothing.update(clothingId, {
-        $set: {
-          type: detections.labels[0]
+      Meteor.bindEnvironment(function(err, detections, apiResponse) {
+        var arrayLength = detections.labels.length;
+        var category = "unknown";
+        var label = "unknown";
+        for (var i = 0; i < arrayLength; i++) {
+          if (typeClothes[detections.labels[i]]) {
+            category = typeClothes[detections.labels[i]];
+            label = detections.labels[i];
+            break;
+          }
         }
-      });
+
+        Clothing.update(clothingId, {
+          $set: {
+            type: label,
+            category: category
+          }
+        });
     }));
   },
 });

@@ -1,3 +1,11 @@
+Tracker.autorun(() => {
+  let routeName = FlowRouter.getRouteName();
+
+  if (routeName === "home") {
+    $('').css('background-image', 'url(' + imageUrl + ')');
+  }
+});
+
 // Template.addOutfitModal
 
 Session.setDefault("addingOutfit", false);

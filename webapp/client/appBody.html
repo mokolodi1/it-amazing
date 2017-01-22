@@ -1,7 +1,7 @@
 <template name="appBody">
   {{> addOutfitModal}}
 
-  <div class="hello" style="width: 100%; height: 100%">
+  <div class={{backgroundIfHome}} style="width: 100%; height: 100%">
     <div class="ui fixed borderless menu">
       <div class="ui container">
         <a href={{pathFor "home"}} class="header item">

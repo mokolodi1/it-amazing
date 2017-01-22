@@ -92,5 +92,5 @@ Outfits.attachSchema(new SimpleSchema({
     minCount: 1,
   },
 
-  shared_with: { type: [String] }
+  shared_with: { type: [String], defaultValue: [] }
 }));

@@ -113,7 +113,28 @@
     {{#if length getOutfits}}
       <div class="ui link centered cards">
         {{#each getOutfits}}
-          {{name}}
+          <a class="card" href={{pathFor "viewOutfit" outfit_id=_id}}>
+            <div class="image">
+              {{! MARCO}}
+              <img src="/images/{{image_id}}">
+            </div>
+
+            <div class="content">
+              <div class="header">
+                {{name}}
+              </div>
+              {{#if description}}
+                <div class="description">
+                  {{description}}
+                </div>
+              {{/if}}
+            </div>
+            <div class="extra content">
+              <span class="right floated">
+                Created {{sinceCreated}}
+              </span>
+            </div>
+          </a>
         {{/each}}
       </div>
     {{else}}

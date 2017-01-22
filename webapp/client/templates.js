@@ -152,6 +152,9 @@ Template.outfits.helpers({
   getOutfits() {
     return Outfits.find({}, { sort: { date_created: -1 } });
   },
+  sinceCreated() {
+    return moment(this.date_created).fromNow();
+  },
 });
 
 // Template.viewOutfit

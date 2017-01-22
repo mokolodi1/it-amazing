@@ -12,9 +12,6 @@ typeClothes = {
   "sunglasses": "accessory",
   "glasses": "accessory",
   "eyewear": "accessory",
-
-  "bag": "accessory",
-
   "trousers": "bottom",
   "shorts": "bottom",
   "suit": "top",

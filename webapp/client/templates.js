@@ -10,11 +10,22 @@ Template.closet.helpers({
       sort: { date_created: -1 }
     });
   },
-  sinceCreated() {
-    return moment(this.date_created).fromNow();
+  somethingSelected() {
+    let selectedIds = Session.get("selectedIds");
+
+    let keys = Object.keys(selectedIds);
+
+    for (let i = 0; i < keys.length; i++) {
+      if (selectedIds[keys[i]]) {
+        return true;
+      }
+    }
   },
-  capitalize(thing) {
-    return thing.charAt(0).toUpperCase() + thing.slice(1);
+});
+
+Template.closet.events({
+  "click .create-outfit"(event, instance) {
+    $("#add-outfit-modal").modal("show");
   },
 });
 
@@ -29,7 +40,7 @@ Template.addClothing.onCreated(function () {
 Template.addClothing.helpers({
   currentUpload() {
     return Template.instance().currentUpload.get();
-  }
+  },
 });
 
 Template.addClothing.events({
@@ -58,5 +69,73 @@ Template.addClothing.events({
 
       upload.start();
     }
-  }
+  },
+});
+
+// Template.closetCard
+
+Session.setDefault("selectedIds", {});
+
+Template.closetCard.onRendered(function () {
+  let instance = this;
+
+  // keep the last value so it doesn't run a ton of times
+  let current = false;
+
+  instance.autorun((computation) => {
+    let itemSelected = Session.get("selectedIds")[instance.data._id];
+
+    if (itemSelected !== current) {
+      let $image = instance.$('.image');
+
+      if (itemSelected) {
+        $image.dimmer({
+          opacity: 0.4,
+          duration: {
+            show: 100,
+            hide: 100,
+          },
+          closable: false,
+        }).dimmer("show");
+      } else {
+        // don't need to hide if first run
+        if (!computation.firstRun) {
+          $image.dimmer("hide");
+        }
+      }
+    }
+
+    current = itemSelected;
+  });
+});
+
+Template.closetCard.helpers({
+  sinceCreated() {
+    return moment(this.date_created).fromNow();
+  },
+  capitalize(thing) {
+    return thing.charAt(0).toUpperCase() + thing.slice(1);
+  },
+  categoryColor() {
+    let colorDict = {
+      top: "red",
+      bottom: "blue",
+      shoes: "yellow",
+      socks: "green",
+      accessory: "purple",
+    };
+
+    return colorDict[this.category];
+  },
+});
+
+Template.closetCard.events({
+  "click .toggle-selected"(event, instance) {
+    let selectedIds = Session.get("selectedIds");
+
+    let { _id } = instance.data;
+    selectedIds[_id] = !selectedIds[_id];
+
+    Session.set("selectedIds", selectedIds);
+  },
 });

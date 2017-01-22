@@ -5,8 +5,10 @@ typeClothes = {
   "pants": "bottom",
   "sock": "socks",
   "shoe": "shoes",
-  "hat": "accessories"
-}
+  "hat": "accessory",
+  "eyewear": "accessory",
+  "glove": "accessory",
+};
 
 Meteor.methods({
   processClothing(clothingId) {
@@ -34,10 +36,12 @@ Meteor.methods({
 
     visionClient.detect(image.path, types,
       Meteor.bindEnvironment(function(err, detections, apiResponse) {
-        var arrayLength = detections.labels.length;
-        var category = "unknown";
+        console.log("detections.labels:", detections.labels);
+
+        var category = "accessory";
         var label = "unknown";
-        for (var i = 0; i < arrayLength; i++) {
+
+        for (var i = 0; i < detections.labels.length; i++) {
           if (typeClothes[detections.labels[i]]) {
             category = typeClothes[detections.labels[i]];
             label = detections.labels[i];

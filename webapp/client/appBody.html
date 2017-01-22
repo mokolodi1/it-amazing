@@ -1,79 +1,57 @@
 <template name="appBody">
-  <div class="ui fixed borderless menu">
-    <div class="ui container">
-      <a href={{pathFor "home"}} class="header item">
-        IT Amazing
-      </a>
+  {{> addOutfitModal}}
 
-      <a href={{pathFor "closet"}} class="ui simple dropdown item">
-        Closet
-        <!-- <div class="menu">
-          <a href={{pathFor "manageObjects" collectionSlug="data-sets"}}
-              class="item">
-            Data Sets
-          </a>
-          <a href={{pathFor "manageObjects" collectionSlug="sample-groups"}}
-              class="item">
-            Sample Groups
-          </a>
-          <a href={{pathFor "manageObjects" collectionSlug="gene-sets"}}
-              class="item">
-            Gene Sets
-          </a>
-          <a href={{pathFor "manageObjects" collectionSlug="gene-set-groups"}}
-              class="item">
-            Gene Set Groups
-          </a>
-          <a href={{pathFor "manageObjects" collectionSlug="studies"}}
-              class="item">
-            Studies
-          </a>
-          <a href={{pathFor "manageObjects" collectionSlug="clinical-forms"}}
-              class="item">
-            Clinical Forms
-          </a>
-        </div> -->
-      </a>
+  <div class="hello" style="width: 100%; height: 100%">
+    <div class="ui fixed borderless menu">
+      <div class="ui container">
+        <a href={{pathFor "home"}} class="header item">
+          IT Amazing
+        </a>
 
-      <a href={{pathFor "outfits"}} class="ui simple dropdown item">
-        Outfits
-      </a>
+        <a href={{pathFor "closet"}} class="ui simple dropdown item">
+          Closet
+        </a>
 
-      <div class="right menu">
-        {{> notificationsMenuItem}}
+        <a href={{pathFor "outfits"}} class="ui simple dropdown item">
+          Outfits
+        </a>
 
-        <div class="item">
-          {{> loginButtons}}
+        <div class="right menu">
+          {{> notificationsMenuItem}}
+
+          <div class="item">
+            {{> loginButtons}}
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="ui container" style="padding-top: 55px;">
-    {{! don't show the breadcrumbs on the not signed in page or
-        on the home page}}
-    {{#unless isActiveRoute "home"}}
-      {{> siteBreadcrumbs}}
-    {{/unless}}
+    <div class="ui container" style="padding-top: 55px;">
+      {{! don't show the breadcrumbs on the not signed in page or
+          on the home page}}
+      {{#unless isActiveRoute "home"}}
+        {{> siteBreadcrumbs}}
+      {{/unless}}
 
-    {{#if loggingIn}}
-      {{> loggingInMessage}}
-    {{else}}
-      {{#if currentUser}}
-        {{>Template.dynamic template=content data=params}}
+      {{#if loggingIn}}
+        {{> loggingInMessage}}
       {{else}}
-        {{#if isActiveRoute "home"}}
-          {{> home}}
+        {{#if currentUser}}
+          {{>Template.dynamic template=content data=params}}
         {{else}}
-          <div class="ui massive message">
-            <div class="header">
-              Sign in to continue
+          {{#if isActiveRoute "home"}}
+            {{> home}}
+          {{else}}
+            <div class="ui massive message">
+              <div class="header">
+                Sign in to continue
+              </div>
+              Please sign in to access your virtual closet.
             </div>
-            Please sign in to access your virtual closet.
-          </div>
+          {{/if}}
         {{/if}}
       {{/if}}
-    {{/if}}
+    </div>
   </div>
 </template>
 
@@ -159,5 +137,30 @@
     <p>
       If you think you are seeing this message in error, please {{> contactUsButton}}
     </p>
+  </div>
+</template>
+
+<template name="addOutfitModal">
+  <div id="add-outfit-modal" class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+      What would you like to name your outfit?
+    </div>
+    <div class="content">
+      {{#autoForm id="addOutfit" schema=nameAndDescription}}
+        {{> afQuickField name="name"}}
+        {{> afQuickField name="description"}}
+      {{/autoForm}}
+    </div>
+    <div class="actions">
+      <div class="ui black deny button">
+        Never mind
+      </div>
+      <div class="ui positive right labeled icon button
+          {{#if addingOutfit}}loading{{/if}}">
+        Create outfit!
+        <i class="checkmark icon"></i>
+      </div>
+    </div>
   </div>
 </template>

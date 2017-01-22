@@ -6,35 +6,27 @@
   <h1>
     Closet
 
+    <div class="ui primary right floated button create-outfit
+        {{#unless somethingSelected}}disabled{{/unless}}">
+      {{#if somethingSelected}}
+        <i class="plus icon"></i>
+        Create an outfit
+      {{else}}
+        Select items to create an outfit
+      {{/if}}
+    </div>
+
     {{> addClothing}}
   </h1>
 
   {{#if length getClothing}}
-    <div class="ui link cards">
+    <div class="ui link centered cards">
       {{#each getClothing}}
-        <div class="card">
-          <div class="image">
-            <img src="/images/{{image_id}}">
-          </div>
-          <div class="content">
-            <div class="header">{{capitalize type}}</div>
-            <!-- <div class="meta">
-              <a>Friends</a>
-            </div>
-            <div class="description">
-              Matthew is an interior designer living in New York.
-            </div> -->
-          </div>
-          <div class="extra content">
-            <span class="right floated">
-              Added {{sinceCreated}}
-            </span>
-          </div>
-        </div>
+        {{> closetCard}}
       {{/each}}
     </div>
   {{else}}
-    <div class="ui message">
+    <div class="ui huge message">
       <div class="header">
         No clothing
       </div>
@@ -46,12 +38,51 @@
 </template>
 
 <template name="addClothing">
-  <div for="file" class="ui icon primary right floated button choose-files
-      {{#if currentUpload}}loading{{/if}}">
-    <i class="plus icon"></i>
+  <div for="file" class="ui icon secondary right floated button
+      choose-files {{#if currentUpload}}loading{{/if}}">
+    <i class="upload icon"></i>
     Add clothing
   </div>
   <input type="file" id="fileInput" style="display: none">
+</template>
+
+<template name="closetCard">
+  <div class="card toggle-selected disable-text-selection">
+    <div class="dimmable image">
+      <div class="ui dimmer">
+        <div class="content">
+          <h2 class="center">
+            <i class="huge checkmark icon"></i>
+          </h2>
+        </div>
+      </div>
+      <img src="/images/{{image_id}}">
+    </div>
+
+    <div class="content">
+      <div class="header">
+        {{capitalize type}}
+
+        {{#if category}}
+          <div class="ui {{categoryColor}} horizontal right floated label">
+            {{category}}
+          </div>
+        {{/if}}
+      </div>
+
+<!--       <div class="meta">
+        <a>Friends</a>
+      </div>
+      <div class="description">
+        Matthew is an interior designer living in New York.
+      </div> -->
+    </div>
+    <div class="extra content">
+      <span class="right floated">
+        Added {{sinceCreated}}
+      </span>
+    </div>
+  </div>
 </template>
 
 <template name="dataLoading">

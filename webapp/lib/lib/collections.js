@@ -73,9 +73,22 @@ Clothing.attachSchema(new SimpleSchema({
       "bottom",
       "shoes",
       "socks",
-      "accessories",
-      "unknown",
+      "accessory",
     ],
-    defaultValue: "unknown"
+    optional: true,
+  },
+}));
+
+Outfits = new Meteor.Collection("outfits");
+Outfits.attachSchema(new SimpleSchema({
+  user_id: { type: String },
+  date_created: { type: Date, autoValue: dateCreatedAutoValue },
+
+  name: { type: String },
+  description: { type: String },
+
+  clothing_ids: {
+    type: [String],
+    minCount: 1,
   },
 }));

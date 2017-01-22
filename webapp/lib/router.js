@@ -14,5 +14,6 @@ FlowRouter.route("/", sameNameAndAction("home"));
 
 FlowRouter.route("/closet", sameNameAndAction("closet"));
 FlowRouter.route("/outfits", sameNameAndAction("outfits"));
+FlowRouter.route("/outfits/:outfit_id", sameNameAndAction("viewOutfit"));
 
 FlowRouter.route("/notifications", sameNameAndAction("viewAllNotifications"));

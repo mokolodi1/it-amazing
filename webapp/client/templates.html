@@ -1,6 +1,22 @@
 <template name="home">
   <h1 class="headings main">Experience Clothes Differently</h1>
   <h3 class="headings secondary">Create outfits and share them with your friends</h3>
+  <div class="big_buttons">
+    <a href={{pathFor "closet"}}>
+      <button class="ui primary button">
+        <p class="button_text">
+          View Closet
+        </p>
+      </button>
+    </a>
+    <a href={{pathFor "outfits"}}>
+      <button class="ui primary button">
+        <p class="button_text">
+          View Outfits
+        </p>
+      </button>
+    </a>
+  </div>
 </template>
 
 <template name="closet">

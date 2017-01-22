@@ -178,4 +178,7 @@ Template.viewOutfit.helpers({
   categoryColor() {
     return colorDict[this.category];
   },
+  currentUrl() {
+    return window.location.href;
+  }
 });

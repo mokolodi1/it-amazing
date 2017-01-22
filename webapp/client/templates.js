@@ -225,7 +225,7 @@ Template.viewOutfit.helpers({
   },
   currentUrl() {
     return window.location.href;
-  }
+  },
   sinceCreated() {
     return moment(this.date_created).fromNow();
   },

@@ -19,6 +19,7 @@ typeClothes = {
   "shorts": "bottom",
   "suit": "top",
   "cap": "accessory",
+  "briefs": "bottom",
 };
 
 Meteor.methods({

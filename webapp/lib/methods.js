@@ -30,6 +30,8 @@ Meteor.methods({
     Meteor.call("processClothing", clothingId);
   },
   addOutfit(firstParts) {
+    
+
     return Outfits.insert(_.extend(firstParts, {
       user_id: Meteor.userId()
     }));

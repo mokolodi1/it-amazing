@@ -12,6 +12,8 @@ typeClothes = {
   "sunglasses": "accessory",
   "glasses": "accessory",
   "eyewear": "accessory",
+
+  "bag": "accessory",
 };
 
 Meteor.methods({

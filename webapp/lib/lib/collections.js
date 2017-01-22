@@ -85,7 +85,7 @@ Outfits.attachSchema(new SimpleSchema({
   date_created: { type: Date, autoValue: dateCreatedAutoValue },
 
   name: { type: String },
-  description: { type: String },
+  description: { type: String, optional: true },
 
   clothing_ids: {
     type: [String],

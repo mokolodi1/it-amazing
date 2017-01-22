@@ -109,6 +109,14 @@ Template.closetCard.onRendered(function () {
   });
 });
 
+let colorDict = {
+  top: "red",
+  bottom: "blue",
+  shoes: "yellow",
+  socks: "green",
+  accessory: "purple",
+};
+
 Template.closetCard.helpers({
   sinceCreated() {
     return moment(this.date_created).fromNow();
@@ -117,14 +125,6 @@ Template.closetCard.helpers({
     return thing.charAt(0).toUpperCase() + thing.slice(1);
   },
   categoryColor() {
-    let colorDict = {
-      top: "red",
-      bottom: "blue",
-      shoes: "yellow",
-      socks: "green",
-      accessory: "purple",
-    };
-
     return colorDict[this.category];
   },
 });
@@ -137,5 +137,28 @@ Template.closetCard.events({
     selectedIds[_id] = !selectedIds[_id];
 
     Session.set("selectedIds", selectedIds);
+  },
+});
+
+// Template.viewOutfit
+
+Template.viewOutfit.onCreated(function () {
+  let instance = this;
+
+  instance.subscribe("outfit", FlowRouter.getParam("outfit_id"));
+});
+
+Template.viewOutfit.helpers({
+  getOutfit() {
+    return Outfits.findOne(FlowRouter.getParam("outfit_id"));
+  },
+  getClothing() {
+    return Clothing.find({});
+  },
+  capitalize(thing) {
+    return thing.charAt(0).toUpperCase() + thing.slice(1);
+  },
+  categoryColor() {
+    return colorDict[this.category];
   },
 });

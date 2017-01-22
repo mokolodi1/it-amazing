@@ -101,3 +101,40 @@
 <template name="outfits">
   <h1>Outfits</h1>
 </template>
+
+<template name="viewOutfit">
+  {{#if Template.subscriptionsReady}}
+    {{#with getOutfit}}
+      <h1>{{name}}</h1>
+
+      {{#if description}}
+        <p>{{description}}</p>
+      {{/if}}
+
+      <div class="ui cards">
+        {{#each getClothing}}
+          <div class="card">
+            <div class="image">
+              <img src="/images/{{image_id}}">
+            </div>
+
+            <div class="content">
+              <div class="header">
+                {{capitalize type}}
+
+                {{#if category}}
+                  <div class="ui {{categoryColor}} horizontal right floated label">
+                    {{category}}
+                  </div>
+                {{/if}}
+              </div>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+
+    {{/with}}
+  {{else}}
+    {{> dataLoading}}
+  {{/if}}
+</template>

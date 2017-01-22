@@ -2,8 +2,16 @@ Tracker.autorun(() => {
   let routeName = FlowRouter.getRouteName();
 
   if (routeName === "home") {
-    $('').css('background-image', 'url(' + imageUrl + ')');
+    // $('').css('background-image', 'url(' + imageUrl + ')');
   }
+});
+
+// Template.siteBreadcrumbs
+
+Template.siteBreadcrumbs.helpers({
+  or(first, second) {
+    return first || second;
+  },
 });
 
 // Template.addOutfitModal
@@ -41,6 +49,7 @@ Template.addOutfitModal.onRendered(function () {
           // reset everything
           AutoForm.resetForm("addOutfit");
           Session.set("selectedIds", {});
+          $("#add-outfit-modal").modal("hide");
         });
       }
 

@@ -69,11 +69,17 @@
       {{/breadcrumbItem}}
     {{/if}}
 
-    {{#if isActiveRoute "outfits"}}
+    {{#if or (isActiveRoute "outfits") (isActiveRoute "viewOutfit")}}
       {{#breadcrumbItem isActive=(isActiveRoute "outfits")
           href=(pathFor "outfits")}}
         Outfits
       {{/breadcrumbItem}}
+
+      {{#if isActiveRoute "viewOutfit"}}
+        {{#breadcrumbItem isActive=true}}
+          View
+        {{/breadcrumbItem}}
+      {{/if}}
     {{/if}}
 
     <!-- {{#if or (isActiveRoute "listLimmaGSEA")
@@ -146,12 +152,14 @@
     <div class="header">
       What would you like to name your outfit?
     </div>
+
     <div class="content">
       {{#autoForm id="addOutfit" schema=nameAndDescription}}
         {{> afQuickField name="name"}}
-        {{> afQuickField name="description"}}
+        {{> afQuickField name="description" type="textarea"}}
       {{/autoForm}}
     </div>
+    
     <div class="actions">
       <div class="ui black deny button">
         Never mind

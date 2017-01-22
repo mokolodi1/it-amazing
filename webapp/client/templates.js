@@ -13,6 +13,9 @@ Template.closet.helpers({
   sinceCreated() {
     return moment(this.date_created).fromNow();
   },
+  capitalize(thing) {
+    return thing.charAt(0).toUpperCase() + thing.slice(1);
+  },
 });
 
 // Template.addClothing

@@ -64,4 +64,16 @@ Clothing.attachSchema(new SimpleSchema({
 
   // can also be "unknown"
   type: { type: String, defaultValue: "waiting" },
+
+  // category
+  category: {
+    type: String,
+    allowedValues: [
+      "top",
+      "bottom",
+      "shoes",
+      "socks",
+      "accessories",
+    ],
+  },
 }));

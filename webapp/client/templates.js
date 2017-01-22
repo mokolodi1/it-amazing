@@ -204,6 +204,8 @@ Template.viewOutfit.onCreated(function () {
   let instance = this;
 
   instance.subscribe("outfit", FlowRouter.getParam("outfit_id"));
+
+  instance.imageId = new ReactiveVar();
 });
 
 Template.viewOutfit.onRendered(function () {
@@ -215,7 +217,9 @@ Template.viewOutfit.helpers({
     return Outfits.findOne(FlowRouter.getParam("outfit_id"));
   },
   getClothing() {
-    return Clothing.find({});
+    let outfit = Outfits.findOne(FlowRouter.getParam("outfit_id"));
+
+    return Clothing.find({ _id: { $in: outfit.clothing_ids } });
   },
   capitalize(thing) {
     return thing.charAt(0).toUpperCase() + thing.slice(1);
@@ -238,12 +242,36 @@ Template.viewOutfit.helpers({
   },
   commentSchema() {
     return new SimpleSchema({
-      text: { type: String },
+      text: { type: String, label: "Enter your comment" },
       outfit_id: { type: String },
+      image_id: { type: String, optional: true },
     });
   },
   getComments() {
     return Comments.find({});
+  },
+  getImageId() {
+    return Template.instance().imageId.get();
+  },
+  reactiveImageId() {
+    return Template.instance().imageId;
+  },
+  shareData() {
+    console.log("this.name:", this.name);
+
+    return {
+      title: this.name,
+      author: Meteor.user().profile.fullName,
+      description: this.description,
+    }
+  },
+});
+
+Template.viewOutfit.events({
+  "submit #addComment"(event, instance) {
+    instance.imageId.set(null);
+
+    instance.$(".ui.dropdown").dropdown("clear");
   },
 });
 
@@ -278,4 +306,29 @@ Template.askForNameForm.helpers({
 
 Template.semanticUIDropdown.onRendered(function () {
   this.$(".ui.dropdown").dropdown(this.data.options);
+});
+
+// Template.linkClothingButton
+
+Template.linkClothingButton.onCreated(function () {
+  this.subscribe("literallyAllClothing");
+});
+
+Template.linkClothingButton.onRendered(function () {
+  let instance = this;
+
+  instance.$(".ui.dropdown").dropdown({
+    onChange(value, text, $choice) {
+      instance.data.set(value);
+    },
+  });
+});
+
+Template.linkClothingButton.helpers({
+  allClothing() {
+    return Clothing.find({});
+  },
+  capitalize(thing) {
+    return thing.charAt(0).toUpperCase() + thing.slice(1);
+  },
 });

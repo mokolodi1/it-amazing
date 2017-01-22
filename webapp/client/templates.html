@@ -3,15 +3,15 @@
   <h3 class="headings secondary">Create outfits and share them with your friends</h3>
   <div class="big_buttons">
     <a href={{pathFor "closet"}}>
-      <button class="ui primary button">
-        <p class="button_text">
+      <button class="ui huge primary button">
+        <p class="">
           View Closet
         </p>
       </button>
     </a>
     <a href={{pathFor "outfits"}}>
-      <button class="ui primary button">
-        <p class="button_text">
+      <button class="ui huge primary button">
+        <p class="">
           View Outfits
         </p>
       </button>
@@ -148,10 +148,10 @@
       <div class="ui link centered cards">
         {{#each getOutfits}}
           <a class="card" href={{pathFor "viewOutfit" outfit_id=_id}}>
-            <div class="image">
+            <!-- <div class="image">
               {{! MARCO}}
               <img src="/images/{{image_id}}">
-            </div>
+            </div> -->
 
             <div class="content">
               <div class="header">
@@ -191,7 +191,13 @@
 <template name="viewOutfit">
   {{#if Template.subscriptionsReady}}
     {{#with getOutfit}}
-      <h1>{{name}}</h1>
+      <h1>
+        {{name}}
+
+        {{#if sharingEnabled}}
+          {{> shareit shareData}}
+        {{/if}}
+      </h1>
 
       {{#if description}}
         <p>{{description}}</p>
@@ -223,18 +229,6 @@
     {{> dataLoading}}
   {{/if}}
 
-  <!-- <div  class="fb-share-button"
-        data-href="http://google.com"
-        data-layout="button"
-        data-size="large"
-        data-mobile-iframe="true">
-    <a  class="fb-xfbml-parse-ignore"
-        target="_blank"
-        href="http://google.com">
-        Share
-    </a>
-  </div> -->
-
   {{#if sharingEnabled}}
     <div class="ui comments">
       <h3 class="ui dividing header">Comments</h3>
@@ -249,14 +243,30 @@
             <div class="text">
               {{text}}
             </div>
+
+            {{#if image_id}}
+              <div class="extra images">
+                <a><img src="/images/{{image_id}}"></a>
+              </div>
+            {{/if}}
           </div>
         </div>
       {{/each}}
 
       {{#autoForm id="addComment" type="method" meteormethod="addComment"
           schema=commentSchema class="reply"}}
-        {{> afFieldInput name="text" placeholder="Compose your comment..."}}
+
         {{> afFieldInput name="outfit_id" value=(param "outfit_id") type="hidden"}}
+        {{> afFieldInput name="image_id" value=getImageId type="hidden"}}
+
+        <div class="ui grid">
+          <div class="ten wide column">
+            {{> afQuickField name="text" placeholder="Compose your comment..."}}
+          </div>
+          <div class="six wide column">
+            {{> linkClothingButton reactiveImageId}}
+          </div>
+        </div>
 
         <button type="submit" class="ui primary button" style="margin-top: 10px;">
           <i class="icon edit"></i> Add Reply
@@ -306,4 +316,23 @@
 <template name="semanticUIDropdown">
   {{! Calls $(".ui.dropdown").dropdown() when rendered}}
   {{> UI.contentBlock}}
+</template>
+
+<template name="linkClothingButton">
+  <div class="ui floating search labeled icon dropdown button" style="margin-top: 22px;">
+    <i class="linkify icon"></i>
+    <span class="default text">Link clothing</span>
+    <div class="menu">
+      <div class="header">
+        All clothing
+      </div>
+
+      {{#each allClothing}}
+        <div class="item" data-value={{image_id}}>
+          <img class="ui avatar image" src="/images/{{image_id}}">
+          {{capitalize type}}
+        </div>
+      {{/each}}
+    </div>
+  </div>
 </template>

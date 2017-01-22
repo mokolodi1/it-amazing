@@ -103,4 +103,6 @@ Comments.attachSchema(new SimpleSchema({
   name: { type: String },
   text: { type: String },
   outfit_id: { type: String },
+
+  image_id: { type: String, optional: true },
 }));

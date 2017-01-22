@@ -14,6 +14,23 @@ Meteor.methods({
       }
     }, { multi: true });
   },
+  visitedNotification(notificationId) {
+    check(notificationId, String);
+
+    let user = MedBook.ensureUser(Meteor.userId());
+
+    Notifications.update({
+      _id: notificationId,
+
+      // security
+      user_id: user._id,
+    }, {
+      $set: {
+        seen: true,
+        visited: true,
+      }
+    });
+  },
   addClothing(image_id) {
     let user_id = Meteor.userId();
     ensureUser(user_id);
@@ -51,22 +68,23 @@ Meteor.methods({
       }
     });
   },
-  addComment({ text, outfit_id }) {
-    console.log("yop");
-
+  addComment({ text, outfit_id, image_id }) {
     let fromUser = Meteor.user();
     let { fullName, preferredName } = fromUser.profile;
+
+    console.log("image_id:", image_id);
 
     Comments.insert({
       text,
       outfit_id,
       name: fullName,
       user_id: Meteor.userId(),
+      image_id,
     });
 
     let outfit = Outfits.findOne(outfit_id);
 
-    if (outfit.user_id !== fromUser.user_id) {
+    if (outfit.user_id !== fromUser._id) {
       Notifications.insert({
         user_id: outfit.user_id,
         href: `/outfits/${outfit_id}`,

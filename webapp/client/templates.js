@@ -1,7 +1,18 @@
 Template.closet.onCreated(function () {
   let instance = this;
 
-  instance.subscribe("allClothing");
+  instance.subscribe("sharedClosets");
+
+  instance.currentCloset = new ReactiveVar({
+    user_id: Meteor.userId(),
+    name: "Your closet",
+  });
+
+  instance.autorun(() => {
+    if (Meteor.userId()) {
+      instance.subscribe("allClothing", instance.currentCloset.get().user_id);
+    }
+  });
 });
 
 Template.closet.helpers({
@@ -21,11 +32,41 @@ Template.closet.helpers({
       }
     }
   },
+  sharingEnabled() {
+    const user = Meteor.user();
+
+    return user && user.profile &&
+        user.profile.fullName &&
+        user.profile.preferredName;
+  },
+  getClosets() {
+    let others = Meteor.users.find({
+      _id: { $ne: Meteor.userId() }
+    }).map((user) => {
+      return {
+        user_id: user._id,
+        name: user.profile.fullName + "'s closet",
+      };
+    });
+
+    return [
+      {
+        user_id: Meteor.userId(),
+        name: "Your closet"
+      },
+    ].concat(others);
+  },
+  currentClosetName() {
+    return Template.instance().currentCloset.get().name;
+  },
 });
 
 Template.closet.events({
   "click .create-outfit"(event, instance) {
     $("#add-outfit-modal").modal("show");
+  },
+  "click .set-closet"(event, instance) {
+    instance.currentCloset.set(this);
   },
 });
 
@@ -165,6 +206,10 @@ Template.viewOutfit.onCreated(function () {
   instance.subscribe("outfit", FlowRouter.getParam("outfit_id"));
 });
 
+Template.viewOutfit.onRendered(function () {
+  this.$(".form .form-group").removeClass("form-group").addClass("field");
+});
+
 Template.viewOutfit.helpers({
   getOutfit() {
     return Outfits.findOne(FlowRouter.getParam("outfit_id"));
@@ -181,4 +226,56 @@ Template.viewOutfit.helpers({
   currentUrl() {
     return window.location.href;
   }
+  sinceCreated() {
+    return moment(this.date_created).fromNow();
+  },
+  sharingEnabled() {
+    const user = Meteor.user();
+
+    return user && user.profile &&
+        user.profile.fullName &&
+        user.profile.preferredName;
+  },
+  commentSchema() {
+    return new SimpleSchema({
+      text: { type: String },
+      outfit_id: { type: String },
+    });
+  },
+  getComments() {
+    return Comments.find({});
+  },
+});
+
+// Template.askForName
+
+Template.askForName.helpers({
+  needToAskForName: function () {
+    const user = Meteor.user();
+
+    return !user || !user.profile ||
+        !user.profile.fullName ||
+        !user.profile.preferredName;
+  },
+});
+
+// Template.askForNameForm
+
+Template.askForNameForm.onRendered(function () {
+  this.$(".form .form-group").removeClass("form-group").addClass("field");
+});
+
+Template.askForNameForm.helpers({
+  nameSchema() {
+    return new SimpleSchema({
+      fullName: { type: String },
+      preferredName: { type: String },
+    });
+  },
+});
+
+// Template.semanticUIDropdown
+
+Template.semanticUIDropdown.onRendered(function () {
+  this.$(".ui.dropdown").dropdown(this.data.options);
 });

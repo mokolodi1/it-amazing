@@ -91,10 +91,16 @@ Outfits.attachSchema(new SimpleSchema({
     type: [String],
     minCount: 1,
   },
-  image_ids: {
-    type: [String],
-    minCount: 1,
-  },
 
-  shared_with: { type: [String], defaultValue: [] }
+  shared_with: { type: [String], defaultValue: [] },
+
+  image_ids: { type: [String] },
+}));
+
+Comments = new Meteor.Collection("comments");
+Comments.attachSchema(new SimpleSchema({
+  date_created: { type: Date, autoValue: dateCreatedAutoValue },
+  name: { type: String },
+  text: { type: String },
+  outfit_id: { type: String },
 }));

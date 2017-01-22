@@ -21,7 +21,21 @@
 
 <template name="closet">
   <h1>
-    Closet
+    {{#if sharingEnabled}}
+      {{#semanticUIDropdown}}
+        <div class="ui dropdown">
+          <div class="text">{{currentClosetName}}</div>
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            {{#each getClosets}}
+              <div class="item set-closet">{{name}}</div>
+            {{/each}}
+          </div>
+        </div>
+      {{/semanticUIDropdown}}
+    {{else}}
+      Your closet
+    {{/if}}
 
     {{#if currentUser}}
       <div class="ui primary right floated button create-outfit
@@ -40,7 +54,7 @@
 
   {{#if Template.subscriptionsReady}}
     {{#if length getClothing}}
-      <div class="ui link centered cards">
+      <div class="ui link centered cards" style="margin-top: 20px;">
         {{#each getClothing}}
           {{> closetCard}}
         {{/each}}
@@ -66,6 +80,10 @@
     {{/if}}
   {{else}}
     {{> dataLoading}}
+  {{/if}}
+
+  {{#if currentUser}}
+    {{> askForName}}
   {{/if}}
 </template>
 
@@ -164,6 +182,10 @@
   {{else}}
     {{> dataLoading}}
   {{/if}}
+
+  {{#if currentUser}}
+    {{> askForName}}
+  {{/if}}
 </template>
 
 <template name="viewOutfit">
@@ -201,7 +223,7 @@
     {{> dataLoading}}
   {{/if}}
 
-  <div  class="fb-share-button"
+  <!-- <div  class="fb-share-button"
         data-href="http://google.com"
         data-layout="button"
         data-size="large"
@@ -211,6 +233,77 @@
         href="http://google.com">
         Share
     </a>
-  </div>
+  </div> -->
 
+  {{#if sharingEnabled}}
+    <div class="ui comments">
+      <h3 class="ui dividing header">Comments</h3>
+
+      {{#each getComments}}
+        <div class="comment">
+          <div class="content">
+            <a class="author">{{name}}</a>
+            <div class="metadata">
+              <span class="date">{{sinceCreated}}</span>
+            </div>
+            <div class="text">
+              {{text}}
+            </div>
+          </div>
+        </div>
+      {{/each}}
+
+      {{#autoForm id="addComment" type="method" meteormethod="addComment"
+          schema=commentSchema class="reply"}}
+        {{> afFieldInput name="text" placeholder="Compose your comment..."}}
+        {{> afFieldInput name="outfit_id" value=(param "outfit_id") type="hidden"}}
+
+        <button type="submit" class="ui primary button" style="margin-top: 10px;">
+          <i class="icon edit"></i> Add Reply
+        </button>
+      {{/autoForm}}
+    </div>
+  {{else}}
+    <div class="ui message">
+      <div class="header">
+        Want comments?
+      </div>
+      Enter your name to enable sharing of closets and outfits.
+    </div>
+  {{/if}}
+</template>
+
+<template name="askForName">
+  {{#if needToAskForName}}
+    <div class="ui attached message">
+      <div class="header">
+        Share your closet!
+      </div>
+      <p>
+        Please enter your name to enable sharing of closets and outfits.
+      </p>
+    </div>
+
+    {{> askForNameForm formClass="attached fluid segment"}}
+  {{/if}}
+</template>
+
+<template name="askForNameForm">
+  {{#autoForm id="setName" type="method" meteormethod="setProfileName"
+      schema=nameSchema class=formClass}}
+    <div class="field">
+      <div class="two fields">
+        {{> afQuickField name="fullName"
+            placeholder="Full name (first and last)"}}
+        {{> afQuickField name="preferredName"
+            placeholder="Preferred name (usually your first name)"}}
+      </div>
+    </div>
+    <button type="submit" class="ui primary button">Set name</button>
+  {{/autoForm}}
+</template>
+
+<template name="semanticUIDropdown">
+  {{! Calls $(".ui.dropdown").dropdown() when rendered}}
+  {{> UI.contentBlock}}
 </template>

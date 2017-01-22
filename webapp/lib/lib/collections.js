@@ -74,6 +74,8 @@ Clothing.attachSchema(new SimpleSchema({
       "shoes",
       "socks",
       "accessories",
+      "unknown",
     ],
+    defaultValue: "unknown"
   },
 }));

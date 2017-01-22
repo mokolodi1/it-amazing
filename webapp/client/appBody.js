@@ -2,7 +2,10 @@ Tracker.autorun(() => {
   let routeName = FlowRouter.getRouteName();
 
   if (routeName === "home") {
-    // $('').css('background-image', 'url(' + imageUrl + ')');
+    $('body').css('background-image', 'url(background.jpg)');
+  }
+  else {
+    $('body').css('background-image', '');
   }
 });
 

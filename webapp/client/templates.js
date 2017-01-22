@@ -140,6 +140,20 @@ Template.closetCard.events({
   },
 });
 
+// Template.outfits
+
+Template.outfits.onCreated(function () {
+  let instance = this;
+
+  instance.subscribe("outfits");
+});
+
+Template.outfits.helpers({
+  getOutfits() {
+    return Outfits.find({}, { sort: { date_created: -1 } });
+  },
+});
+
 // Template.viewOutfit
 
 Template.viewOutfit.onCreated(function () {

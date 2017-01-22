@@ -1,40 +1,55 @@
 <template name="home">
-  <h1 class="headings main">Mark (ify) Your Closet</h1>
-  <h3 class="headings secondary">Facebook fashion for the masses</h3>
+  <h1 class="headings main">Experience Clothes Differently</h1>
+  <h3 class="headings secondary">Create outfits and share them with your friends</h3>
 </template>
 
 <template name="closet">
   <h1>
     Closet
 
-    <div class="ui primary right floated button create-outfit
-        {{#unless somethingSelected}}disabled{{/unless}}">
-      {{#if somethingSelected}}
-        <i class="plus icon"></i>
-        Create an outfit
-      {{else}}
-        Select items to create an outfit
-      {{/if}}
-    </div>
+    {{#if currentUser}}
+      <div class="ui primary right floated button create-outfit
+          {{#unless somethingSelected}}disabled{{/unless}}">
+        {{#if somethingSelected}}
+          <i class="plus icon"></i>
+          Create an outfit
+        {{else}}
+          Select items to create an outfit
+        {{/if}}
+      </div>
 
-    {{> addClothing}}
+      {{> addClothing}}
+    {{/if}}
   </h1>
 
-  {{#if length getClothing}}
-    <div class="ui link centered cards">
-      {{#each getClothing}}
-        {{> closetCard}}
-      {{/each}}
-    </div>
-  {{else}}
-    <div class="ui huge message">
-      <div class="header">
-        No clothing
+  {{#if Template.subscriptionsReady}}
+    {{#if length getClothing}}
+      <div class="ui link centered cards">
+        {{#each getClothing}}
+          {{> closetCard}}
+        {{/each}}
       </div>
-      <p>
-        You don't seem to have added any clothing yet.
-      </p>
-    </div>
+    {{else}}
+      {{#if currentUser}}
+        <div class="ui huge message">
+          <div class="header">
+            No clothing
+          </div>
+          <p>
+            You don't seem to have added any clothing yet.
+          </p>
+        </div>
+      {{else}}
+        <div class="ui huge message">
+          <div class="header">
+            Not logged in
+          </div>
+          Log in to experience the magic!
+        </div>
+      {{/if}}
+    {{/if}}
+  {{else}}
+    {{> dataLoading}}
   {{/if}}
 </template>
 
@@ -70,13 +85,6 @@
           </div>
         {{/if}}
       </div>
-
-<!--       <div class="meta">
-        <a>Friends</a>
-      </div>
-      <div class="description">
-        Matthew is an interior designer living in New York.
-      </div> -->
     </div>
     <div class="extra content">
       <span class="right floated">
@@ -100,6 +108,25 @@
 
 <template name="outfits">
   <h1>Outfits</h1>
+
+  {{#if Template.subscriptionsReady}}
+    {{#if length getOutfits}}
+      <div class="ui link centered cards">
+        {{#each getOutfits}}
+          {{name}}
+        {{/each}}
+      </div>
+    {{else}}
+      <div class="huge ui message">
+        <div class="header">
+          No outfits... yet!
+        </div>
+        <p>You can create outfits by selecting items in your closet.</p>
+      </div>
+    {{/if}}
+  {{else}}
+    {{> dataLoading}}
+  {{/if}}
 </template>
 
 <template name="viewOutfit">
@@ -132,7 +159,6 @@
           </div>
         {{/each}}
       </div>
-
     {{/with}}
   {{else}}
     {{> dataLoading}}

@@ -1,57 +1,42 @@
 <template name="appBody">
   {{> addOutfitModal}}
 
-  <div class={{backgroundIfHome}} style="width: 100%; height: 100%">
-    <div class="ui fixed borderless menu">
-      <div class="ui container">
-        <a href={{pathFor "home"}} class="header item">
-          IT Amazing
-        </a>
+  <div class="ui fixed borderless menu">
+    <div class="ui container">
+      <a href={{pathFor "home"}} class="header item">
+        IT Amazing
+      </a>
 
-        <a href={{pathFor "closet"}} class="ui simple dropdown item">
-          Closet
-        </a>
+      <a href={{pathFor "closet"}} class="ui simple dropdown item">
+        Closet
+      </a>
 
-        <a href={{pathFor "outfits"}} class="ui simple dropdown item">
-          Outfits
-        </a>
+      <a href={{pathFor "outfits"}} class="ui simple dropdown item">
+        Outfits
+      </a>
 
-        <div class="right menu">
-          {{> notificationsMenuItem}}
+      <div class="right menu">
+        {{> notificationsMenuItem}}
 
-          <div class="item">
-            {{> loginButtons}}
-          </div>
+        <div class="item">
+          {{> loginButtons}}
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="ui container" style="padding-top: 55px;">
-      {{! don't show the breadcrumbs on the not signed in page or
-          on the home page}}
-      {{#unless isActiveRoute "home"}}
-        {{> siteBreadcrumbs}}
-      {{/unless}}
+  <div class="ui container" style="padding-top: 55px;">
+    {{! don't show the breadcrumbs on the not signed in page or
+        on the home page}}
+    {{#unless isActiveRoute "home"}}
+      {{> siteBreadcrumbs}}
+    {{/unless}}
 
-      {{#if loggingIn}}
-        {{> loggingInMessage}}
-      {{else}}
-        {{#if currentUser}}
-          {{>Template.dynamic template=content data=params}}
-        {{else}}
-          {{#if isActiveRoute "home"}}
-            {{> home}}
-          {{else}}
-            <div class="ui massive message">
-              <div class="header">
-                Sign in to continue
-              </div>
-              Please sign in to access your virtual closet.
-            </div>
-          {{/if}}
-        {{/if}}
-      {{/if}}
-    </div>
+    {{#if loggingIn}}
+      {{> loggingInMessage}}
+    {{else}}
+      {{> Template.dynamic template=content data=params}}
+    {{/if}}
   </div>
 </template>
 
@@ -159,7 +144,7 @@
         {{> afQuickField name="description" type="textarea"}}
       {{/autoForm}}
     </div>
-    
+
     <div class="actions">
       <div class="ui black deny button">
         Never mind

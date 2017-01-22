@@ -2,6 +2,12 @@ Meteor.publish("allClothing", function () {
   return Clothing.find({ user_id: this.userId });
 });
 
+Meteor.publish("outfits", function () {
+  return Outfits.find({
+    user_id: this.userId
+  });
+});
+
 Meteor.publish("outfit", function (outfitId) {
   let outfit = Outfits.findOne(outfitId);
 
